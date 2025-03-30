@@ -2,43 +2,42 @@ from API_GM import *
 from API_BCN import *
 from Kafka import *
 import pandas as pd
-import socket
 
-review_creator_path = 'utilities/review_creator.json'
 
-with open(review_creator_path, "r", encoding="utf-8") as file:
-    review_creator = json.load(file)
-
-def get_restaurant_info(i):
-    api = API_GM(i, review_creator)
+def get_restaurant_status(i):
+    api = API_GM(i)
     return {
         "restaurant": i,
         "status": api.get_current_status(),
         "people": api.get_number_people()
     }
 
+def get_restaurant_review(i):
+    api = API_GM(i)
+    return api.generate_review()
 
-def wait_for_kafka(host="localhost", port=9092, timeout=30):
-    print("Esperando a que Kafka esté disponible...")
-    for _ in range(timeout):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.connect((host, port))
-                print("✅ Kafka está listo.")
-                return True
-            except Exception:
-                time.sleep(1)
-    print("❌ Kafka no está disponible después de esperar.")
-    return False
+def send_reviews(producer, restaurants, kafka, topic):
+    while True:
+        restaurante = random.choice(restaurants)
+        review_data = get_restaurant_review(restaurante)
+        mensaje = json.dumps(review_data).encode("utf-8")
+        kafka.enviar_a_kafka(producer, topic, [mensaje])
+        time.sleep(5)  # wait 5 seconds
+
+
 
 # Define la ruta base donde tienes Kafka instalado
 KAFKA_DIR = "/Users/tania/kafka"  # cambia esto a tu ruta real
 
+# Al final del día esto se eliminará porque estará guardado en otra carpeta
 path_bcn = "/Users/tania/Desktop/Master/2S/BDM/P1/BDM/dataframes/restaurants_bcn.csv"
-
-kafka_topic = "Restaurant_status"
-
 df_bcn = pd.read_csv(path_bcn)
+
+
+kafka_topic_status = "restaurant_status"
+kafka_topic_review = "restaurant_review"
+kafka_topic_user = "user_coordinate"
+
 
 kafka_conf = {
     "bootstrap.servers": "localhost:9092",
@@ -48,6 +47,7 @@ kafka_conf = {
 if __name__ == "__main__":
 
     kafka = kafka_utilities(KAFKA_DIR)
+    ## CONFIGURAR KAFKA Y CREAR TOPICOS ##
     print("Iniciando Zookeeper...")
     zk_proc = kafka.start_zookeeper()
     
@@ -56,24 +56,30 @@ if __name__ == "__main__":
     print("Iniciando Kafka...")
     kafka_proc = kafka.start_kafka()
 
-    wait_for_kafka()
+    kafka.wait_for_kafka()
 
-    print("Creando tópico de Kafka...")
-    kafka.create_topic(kafka_topic)
+    print("Creando tópicos de Kafka...")
+    kafka.create_topic(kafka_topic_review)
+    kafka.create_topic(kafka_topic_status)
+    kafka.create_topic(kafka_topic_user)
 
-    time.sleep(2)
+    time.sleep(4)
 
+    ## Obtener los datos ##
     restaurants = list(df_bcn['name'])
 
-    
-    results = [get_restaurant_info(i) for i in restaurants[:3]]
-    if results:
+    results_comments = [get_restaurant_review(i) for i in restaurants[:3]]
+    results_status = [get_restaurant_status(i) for i in restaurants[:3]]
+    # Aquí debe ir las coordenadas de usuario
+
+    ## Enviar los datos a Kafka ##
+    if results_status:
         producer = Producer(kafka_conf)
         mensajes = [
             f"Nombre: {r['restaurant']}, Status: {r['status']}, People: {r['people']}"
-            for r in results
+            for r in results_status
         ]
-        kafka.enviar_a_kafka(producer, kafka_topic, mensajes)
+        kafka.enviar_a_kafka(producer, kafka_topic_status, mensajes)
         for mensaje in mensajes:
             print(f"Enviado a Kafka: {mensaje}")
 

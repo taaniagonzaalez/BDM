@@ -2,6 +2,9 @@ import numpy as np
 import random
 from datetime import datetime
 import json
+import os
+import zipfile
+import pandas as pd
 
 """
 
@@ -10,25 +13,56 @@ GET FAKE REVIEWS FROM GOOGLE MAPS
 """
 
 class API_GM():
-    def __init__(self, restaurant, info_file):
+    def __init__(self, restaurant):
         self.restaurant = restaurant
-        self.info_file = info_file
-    
-    def generate_review(self,ranking):
-        # Generate a review
-        if ranking < 3:
-                opinion = 'negative'
+
+    def download_and_extract_kaggle_dataset(self, dataset_api_name, output_folder, kaggle_username="taniiagoonzalez" , kaggle_key="2b50faae1acf0eabe02870abbaab798e"):
+        """
+        Downloads and extracts a dataset from Kaggle using the Kaggle API.
+        
+        Args:
+            dataset_api_name (str): Format 'username/dataset-name'
+            output_folder (str): Folder to extract contents into
+            kaggle_username (str): Your Kaggle username
+            kaggle_key (str): Your Kaggle API key
+        """
+        os.environ['KAGGLE_USERNAME'] = kaggle_username
+        os.environ['KAGGLE_KEY'] = kaggle_key
+
+        zip_name = dataset_api_name.split("/")[-1] + ".zip"
+
+        # Download if not already downloaded
+        if not os.path.exists(zip_name):
+            print(f"Downloading {dataset_api_name}...")
+            os.system(f"kaggle datasets download -d {dataset_api_name}")
         else:
-                opinion = 'positive'
-        full_review = " ".join([
-                                random.choice(self.info_file["opening"]).format(self.restaurant),
-                                random.choice(self.info_file[f"food_{opinion}"]),
-                                random.choice(self.info_file[f"service_{opinion}"])
-                            ])
-        return {'name' : random.choice(self.info_file["client_name"]),
-                'ranking': round(float(np.clip(np.random.normal(loc=ranking,scale=0.5), ranking-0.2,ranking+0.2)),1),
-                'review' : full_review
-                }
+            print(f"{zip_name} already downloaded.")
+
+        # Extract if not already extracted
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+            with zipfile.ZipFile(zip_name, 'r') as zip_ref:
+                zip_ref.extractall(output_folder)
+            print(f"Extracted to {output_folder}")
+        else:
+            print(f"{output_folder} already exists.")
+
+        return output_folder
+    
+    def generate_review(self):
+        # Generate a review
+
+        path_names = self.download_and_extract_kaggle_dataset(
+            "joebeachcapital/1000-restaurant-reviews",
+            "api/google_maps_api/review"
+            )
+        
+        df_review = pd.DataFrame(path_names)[['Reviewer', 'Review', 'Rating']].to_dict(orient="records")
+        
+
+        return {"restaurant_name": self.restaurant,
+            "review":random.choice(df_review),
+            "timestamps": datetime.now()}
     
     def generate_multiple_reviews(self, num=10):
         # Generate multiple reviews

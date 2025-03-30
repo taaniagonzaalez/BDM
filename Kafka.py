@@ -4,6 +4,7 @@ import os
 import time
 from confluent_kafka import Producer
 from confluent_kafka.admin import AdminClient, NewTopic
+import socket
 
 class kafka_utilities():
 
@@ -51,3 +52,17 @@ class kafka_utilities():
         for mensaje in mensajes:
             producer.produce(topic, mensaje.encode("utf-8"))
         producer.flush()
+
+    def wait_for_kafka(self, host="localhost", port=9092, timeout=30):
+        """Espera a que kafka esté disponible"""
+        print("Esperando a que Kafka esté disponible...")
+        for _ in range(timeout):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                try:
+                    s.connect((host, port))
+                    print("✅ Kafka está listo.")
+                    return True
+                except Exception:
+                    time.sleep(1)
+        print("❌ Kafka no está disponible después de esperar.")
+        return False
