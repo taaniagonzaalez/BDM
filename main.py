@@ -25,11 +25,11 @@ if __name__ == "__main__":
     if datos:
         # Enviar a Kafka
         mensajes = [
-            f"Nombre: {r.get('name', 'N/A')}, Dirección: {r.get('location', {}).get('formatted_address', 'N/A')}"
+            f"Nombre: {r.get('name', 'N/A')}, Dirección: {r.get('location', {}).get('formatted_address', 'N/A')}, Fotos: {', '.join(r.get('photos', []))}"
             for r in datos
         ]
         enviar_a_kafka(KAFKA_TOPIC, mensajes)
-        
+
         # Guardar en Delta Lake
         print("Guardando en Delta Lake...")
         spark = iniciar_spark()
@@ -37,3 +37,4 @@ if __name__ == "__main__":
 
         for mensaje in mensajes:
             print(f"Enviado a Kafka: {mensaje}")
+
