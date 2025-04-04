@@ -9,7 +9,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from start_kafka import *
+from utils.start_kafka import *
 
 def user_register(producer):
     names = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona"]
