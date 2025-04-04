@@ -29,7 +29,7 @@ if __name__ == "__main__":
             for r in datos
         ]
         enviar_a_kafka(KAFKA_TOPIC, mensajes)
-
+        print(f"Enviado a Kafka: {mensajes}")
         # Guardar en Delta Lake
         print("Guardando en Delta Lake...")
         spark = iniciar_spark()
