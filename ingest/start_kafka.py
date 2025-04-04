@@ -6,6 +6,9 @@ from confluent_kafka import Producer
 from confluent_kafka.admin import AdminClient, NewTopic
 import socket
 
+user_registration_topic = 'user_registration'
+user_search_topic = 'user_search'
+
 KAFKA_DIR = "/Users/tania/kafka"
 
 class kafka_utilities():
@@ -69,5 +72,17 @@ class kafka_utilities():
         return False
 
 if __name__ == "__main__":
-    kafka_driver = kafka_utilities(KAFKA_DIR)
-    kafka_driver.start_kafka()
+    kafka = kafka_utilities(KAFKA_DIR)
+    ## CONFIGURAR KAFKA Y CREAR TOPICOS ##
+    print("Iniciando Zookeeper...")
+    zk_proc = kafka.start_zookeeper()
+    
+    time.sleep(5)  # esperar a que Zookeeper se inicie antes de Kafka
+    
+    print("Iniciando Kafka...")
+    kafka_proc = kafka.start_kafka()
+
+    kafka.wait_for_kafka()
+
+    kafka.create_topic(user_registration_topic)
+    kafka.create_topic(user_search_topic)

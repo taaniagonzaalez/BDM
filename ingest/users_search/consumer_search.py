@@ -4,11 +4,11 @@ import json
 import os
 
 consumer = KafkaConsumer(
-    'user_registration',
+    'user_search',
     bootstrap_servers=os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"),
     auto_offset_reset='earliest',
     value_deserializer=lambda x: json.loads(x.decode('utf-8')),
-    group_id='user-registration-group'
+    group_id='user-search-group'
 )
 
 s3 = boto3.client('s3')

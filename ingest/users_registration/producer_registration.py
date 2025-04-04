@@ -5,6 +5,7 @@ import random
 from datetime import datetime
 import time
 import sys
+import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -21,14 +22,13 @@ def user_register(producer):
 
         producer.send(user_registration_topic, value = user)
         producer.flush()
-
+        print(f"User registered: {user['user_id']}    {user['name']}    {user['register_date']}")
         time.sleep(20)
 
 
 if __name__ == "__main__":
     
     # Kafka config
-    kafka_driver.create_topic(user_registration_topic)
     producer = KafkaProducer(
                     bootstrap_servers='localhost:9092',
                     value_serializer=lambda v: json.dumps(v).encode('utf-8')

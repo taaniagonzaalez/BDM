@@ -1,12 +1,14 @@
 import io
 import pandas as pd
-import os
 import requests
 import numpy as np
 import random
+import sys
+import os
+from datetime import datetime
+import boto3
+import json
 
-
-folder_path = "dataframes"
 
 """
 DATA FROM BARCELONA API (restaurant names, addresses, phones, etc)
@@ -27,14 +29,31 @@ def bcn_data():
     # Convert to DataFrame using StringIO and modify it
     df = pd.read_csv(io.StringIO(decoded_data), delimiter="\t")
 
-    # Take interesting columns
-    df_new = df[['name', 'created', 'modified', 'addresses_road_name','addresses_start_street_number', 'values_value', 'geo_epgs_4326_lat', 'geo_epgs_4326_lon']]
-    df_new = df_new.rename(columns={'addresses_start_street_number':'street_number', 'values_value' : 'phone_number', 'geo_epgs_4326_lat': 'latitude', 'geo_epgs_4326_lon':'longitude'})
-    df_new['Rating'] = [round(np.clip(np.random.normal(loc=4, scale=1), 0, 5), 1) for _ in range(len(df_new))]
-
     # Generate a random category for the restaurant (it may make no sense)
-    categories = ["Tapas", "Japanese", "Italian", "Mexican", "Chinese", "Indian", "French", "American", "Vegan", "Thai", "Spanish"]
-    df_new['Class'] = [random.choice(categories) for _ in range(len(df_new))]
+    # categories = ["Tapas", "Japanese", "Italian", "Mexican", "Chinese", "Indian", "French", "American", "Vegan", "Thai", "Spanish"]
+    # df_new['Class'] = [random.choice(categories) for _ in range(len(df_new))]
+    
+    return df.to_dict(orient="records")
+
+if __name__ == "__main__":
+
+    s3 = boto3.client('s3')
+    bucket_name = os.getenv("AWS_BUCKET_NAME", "bdm-project-upc")
+
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    s3_path = f's3a://{bucket_name}/raw/batch/barcelona/date={current_date}/'
+    
+    s3.put_object(
+            Bucket=bucket_name,
+            Key=s3_path,
+            Body=json.dumps(bcn_data()),
+            ContentType='application/json'
+        )
+
+    print(f"[S3] Saved in {s3_path}")
+
+
+
 
 
 

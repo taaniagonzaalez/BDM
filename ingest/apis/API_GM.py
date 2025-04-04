@@ -102,17 +102,11 @@ def get_restaurant_info(restaurant):
 
 def get_restaurant_review(restaurant):
     api = API_GM(restaurant)
-    return api.generate_review()
+    return api.generate_multiple_reviews()
+
+if __name__ == "__main__":
+    s3_path = 's3://tu-bucket/raw/batch/barcelona/date=2025-04-03/data.parquet'
+    df = pd.read_parquet(s3_path, engine='pyarrow')
+    print(df)
 
 
-"""
-Send GM reviews
-"""
-
-def send_reviews(producer, restaurants, kafka, topic):
-    while True:
-        restaurante = random.choice(restaurants)
-        review_data = get_restaurant_review(restaurante)
-        mensaje = json.dumps(review_data).encode("utf-8")
-        kafka.enviar_a_kafka(producer, topic, [mensaje])
-        time.sleep(5)  # wait 5 seconds
