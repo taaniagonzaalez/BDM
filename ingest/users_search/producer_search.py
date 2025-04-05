@@ -10,7 +10,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from start_kafka import *
+from utils.start_kafka import *
 
 producer = KafkaProducer(
                 bootstrap_servers='localhost:9092',
