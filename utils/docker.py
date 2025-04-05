@@ -1,7 +1,7 @@
-import docker
+import utils.docker
 
 def build_docker_image(image_tag, dockerfile_path="."):
-    client = docker.from_env()
+    client = utils.docker.from_env()
     print(f"Construyendo la imagen {image_tag}...")
     image, logs = client.images.build(path=dockerfile_path, tag=image_tag)
     for log in logs:

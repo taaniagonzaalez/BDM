@@ -1,7 +1,7 @@
 import time
-from kafka_utils import start_zookeeper, start_kafka, create_topic, enviar_a_kafka, kafka_conf
+from utils.kafka_utils import start_zookeeper, start_kafka, create_topic, enviar_a_kafka, kafka_conf
 from ingest.apis.data_sources import obtener_restaurantes_foursquare, obtener_fotos_restaurante_foursquare, obtener_info_google
-from delta_utils import iniciar_spark, guardar_en_delta
+from utils.delta_utils import iniciar_spark, guardar_en_delta
 from confluent_kafka import Producer
 
 ciudad = "Barcelona"
