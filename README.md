@@ -3,8 +3,9 @@
 ## Introduction
 
 Here you have different folders (apis, kafka) and two dockers, with two yaml files:
-- **docker-compose.airflow.yaml**: when you run it, it initializes airflow with the different DAGS. 
-- **./kafka/docker-compose.kafka.yaml**: when you run it, it simulates an API that is constantly sending data as it comes. 
+- **docker-compose.airflow.yaml**: when you run it, it initializes airflow with the different DAGS.
+  
+- **./kafka/docker-compose.kafka.yaml**: when you run it, it simulates an API that is constantly sending data as it comes and it is processed by kafka. 
 
 In **./apis** you can find the code that extracts data from different APIs (or fake APIs).
 
