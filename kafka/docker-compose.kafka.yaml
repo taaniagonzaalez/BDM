@@ -1,0 +1,82 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8081:8080"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+  
+  kafka-create-topics:
+    build:
+      context: ./kafka-app/create_kafka_topics
+    depends_on:
+      - kafka
+    restart: "no" 
+
+  registration-producer:
+    build:
+      context: ./kafka-app/users_registration/producer
+    depends_on:
+      - kafka
+    restart: unless-stopped
+
+  registration-consumer:
+    build:
+      context: ./kafka-app/users_registration/consumer
+    depends_on:
+      - kafka
+    environment:
+      - AWS_ACCESS_KEY_ID=...
+      - AWS_SECRET_ACCESS_KEY=...
+      - AWS_DEFAULT_REGION=eu-west-1
+    restart: unless-stopped
+
+  search-producer:
+    build:
+      context: ./kafka-app/users_search/producer
+    depends_on:
+      - kafka
+    environment:
+      - AWS_ACCESS_KEY_ID=...
+      - AWS_SECRET_ACCESS_KEY=...
+      - AWS_DEFAULT_REGION=eu-west-1
+    restart: unless-stopped
+
+  search-consumer:
+    build:
+      context: ./kafka-app/users_search/consumer
+    depends_on:
+      - kafka
+    environment:
+      - AWS_ACCESS_KEY_ID=...
+      - AWS_SECRET_ACCESS_KEY=...
+      - AWS_DEFAULT_REGION=eu-west-1
+    restart: unless-stopped

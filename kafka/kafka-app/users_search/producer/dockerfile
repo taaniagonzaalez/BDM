@@ -1,0 +1,9 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY producer_search.py .
+
+RUN pip install kafka-python boto3
+
+CMD ["python", "producer_search.py"]
