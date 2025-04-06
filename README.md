@@ -23,3 +23,10 @@ Before starting, **REMEMBER** to write down the AWS S3 credentials where it is n
   
 4. Run the following to initialize airflow:
    ./airflow.sh
+
+5. Wait until airflow is inizialized and write into your browser:
+   http://localhost:8080/
+
+6. Activate all dags.
+
+**REMEMBER** to close kafka when you finnish in order to not exceed the limit of AWS S3 :(
