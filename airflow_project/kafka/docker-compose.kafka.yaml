@@ -54,9 +54,9 @@ services:
     depends_on:
       - kafka
     environment:
-      - AWS_ACCESS_KEY_ID=AKIAXF4SJB23C4WLTMWQ
-      - AWS_SECRET_ACCESS_KEY=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
-      - AWS_DEFAULT_REGION=eu-west-1
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=
     restart: unless-stopped
 
   search-producer:
@@ -65,9 +65,9 @@ services:
     depends_on:
       - kafka
     environment:
-      - AWS_ACCESS_KEY_ID=AKIAXF4SJB23C4WLTMWQ
-      - AWS_SECRET_ACCESS_KEY=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
-      - AWS_DEFAULT_REGION=eu-west-1
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=
     restart: unless-stopped
 
   search-consumer:
@@ -76,7 +76,7 @@ services:
     depends_on:
       - kafka
     environment:
-      - AWS_ACCESS_KEY_ID=AKIAXF4SJB23C4WLTMWQ
-      - AWS_SECRET_ACCESS_KEY=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
-      - AWS_DEFAULT_REGION=eu-west-1
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=
     restart: unless-stopped
