@@ -1,9 +1,0 @@
-FROM python:3.10-slim
-
-WORKDIR /app
-
-COPY kafka_topics.py .
-
-RUN pip install confluent-kafka
-
-CMD ["python", "kafka_topics.py"]

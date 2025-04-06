@@ -1,9 +1,0 @@
-FROM python:3.10-slim
-
-WORKDIR /app
-
-COPY producer_registration.py .
-
-RUN pip install kafka-python
-
-CMD ["python", "producer_registration.py"]
