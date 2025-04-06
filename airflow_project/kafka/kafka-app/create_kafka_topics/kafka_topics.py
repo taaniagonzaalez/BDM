@@ -2,6 +2,7 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 user_registration_topic = 'user_registration'
 user_search_topic = 'user_search'
+foursquare_topic = "foursquare_restaurants"
 
 def create_topic(topic_name, kafka_bootstrap_servers="kafka:9092"):
         """Crea un tópico en Kafka si no existe."""
@@ -19,3 +20,4 @@ def create_topic(topic_name, kafka_bootstrap_servers="kafka:9092"):
 if __name__ == "__main__":
     create_topic(user_registration_topic)
     create_topic(user_search_topic)    
+    create_topic(foursquare_topic)  

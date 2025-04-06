@@ -9,7 +9,6 @@ kafka_conf = {
     "client.id": "foursquare_producer"
 }
 
-
 def start_zookeeper():
     cmd = f"{KAFKA_DIR}/bin/windows/zookeeper-server-start.bat {KAFKA_DIR}/config/zookeeper.properties"
     return subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

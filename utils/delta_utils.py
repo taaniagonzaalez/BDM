@@ -13,7 +13,6 @@ def guardar_en_delta(spark, datos, ruta, api):
     print("Guardando en Delta Lake...")
     for r in datos:
         r["photo_urls"] = ", ".join(r.get("photo_urls", []))
-        r["google_comments"] = ", ".join(r.get("google_comments", []))
     df = spark.createDataFrame(datos)
     ruta_final = os.path.join(ruta, api)
     df.write.format("delta").mode("overwrite").save(ruta_final)
