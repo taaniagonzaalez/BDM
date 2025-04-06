@@ -15,7 +15,7 @@ Before starting, **REMEMBER** to write down the AWS S3 credentials where it is n
 - ./kafka/docker-compose.kafka.yaml : here, there are 3 places where you have to add these keys: in registration-consumer, search-producer and search-consumer.
 - ./apis/.env
 
-## How to run the data pipeline?
+## How to launch the data pipeline?
 
 1. Open **Docker Desktop**.
    
