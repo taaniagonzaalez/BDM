@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd "$(dirname "$0")"
 echo "Cleaning up previous containers, volumes and orphans..."
 docker compose -f docker-compose.airflow.yaml down --volumes --remove-orphans
 
