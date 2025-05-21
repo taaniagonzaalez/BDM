@@ -8,71 +8,74 @@ import os
 # ----------------------------
 # Configuration
 # ----------------------------
-FOURSQUARE_API_KEY = "fsq33IomRNg9y+33yeWoBDYszC3kkKYDEysBR3/Wyf8kJC0="
-FOURSQUARE_BASE_URL = "https://api.foursquare.com/v3/places/search"
-FOURSQUARE_PHOTOS_URL = "https://api.foursquare.com/v3/places/{fsq_id}/photos"
+YELP_API_KEY = "F-kq1RwUQWqO7076MLzV0-m2zrFvC6BB0sTMQizIjmbZwzIuqWiNMPAY9m5XuW8KKlOWSPYx16rbMFPyzlJHTlMTzYnpxDg1sMvb5pLY21MhW9KCCpOerMy50yktaHYx"
+YELP_BASE_URL = "https://api.yelp.com/v3/businesses/search"
+YELP_PHOTOS_URL = "https://api.yelp.com/v3/businesses/{id}"
 
 MINIO_ENDPOINT = "localhost:9000"
 MINIO_ACCESS_KEY = "minio"
 MINIO_SECRET_KEY = "minio123"
 BUCKET_NAME = "bdm-project-upc"
-RAW_PATH = "raw/batch/foursquare/foursquare_restaurants.parquet"
+RAW_PATH = "raw/batch/yelp/yelp_restaurants.parquet"
 
 # ----------------------------
-# Foursquare API functions
+# Yelp API functions
 # ----------------------------
-def obtener_restaurantes_foursquare(ciudad):
+def obtener_restaurantes_yelp(ciudad):
     headers = {
-        "Accept": "application/json",
-        "Authorization": FOURSQUARE_API_KEY
+        "Authorization": f"Bearer {YELP_API_KEY}"
     }
-    params = {"query": "restaurant", "near": ciudad, "limit": 50}
+    params = {
+        "term": "restaurants",
+        "location": ciudad,
+        "limit": 50
+    }
     try:
-        response = requests.get(FOURSQUARE_BASE_URL, headers=headers, params=params)
+        response = requests.get(YELP_BASE_URL, headers=headers, params=params)
         response.raise_for_status()
-        return response.json().get("results", [])
+        return response.json().get("businesses", [])
     except requests.exceptions.RequestException as e:
-        print(f"Error en la API de Foursquare: {e}")
+        print(f"Error en la API de Yelp: {e}")
         return []
 
-def obtener_fotos_restaurante_foursquare(fsq_id, cantidad=1):
+def obtener_fotos_restaurante_yelp(business_id, cantidad=1):
+    # Yelp business detail endpoint has photos array
     headers = {
-        "Accept": "application/json",
-        "Authorization": FOURSQUARE_API_KEY
+        "Authorization": f"Bearer {YELP_API_KEY}"
     }
-    url = FOURSQUARE_PHOTOS_URL.format(fsq_id=fsq_id)
-    params = {"limit": cantidad}
+    url = YELP_PHOTOS_URL.format(id=business_id)
     try:
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
-        fotos = response.json()
-        return [f"{f['prefix']}original{f['suffix']}" for f in fotos] if fotos else []
+        data = response.json()
+        photos = data.get("photos", [])
+        return photos[:cantidad]
     except requests.exceptions.RequestException as e:
-        print(f"Error al obtener fotos para {fsq_id}: {e}")
+        print(f"Error al obtener fotos para {business_id}: {e}")
         return []
 
 # ----------------------------
 # Data Transformation
 # ----------------------------
-def transformar_datos(resultados):
+def transformar_datos_yelp(resultados):
     datos_transformados = []
     for r in resultados:
-        loc = r.get("location", {})
+        location = r.get("location", {})
         datos_transformados.append({
             "name": r.get("name", ""),
             "direction": ", ".join(filter(None, [
-                loc.get("address"),
-                loc.get("locality"),
-                loc.get("postcode"),
-                loc.get("country")
+                location.get("address1"),
+                location.get("city"),
+                location.get("zip_code"),
+                location.get("country")
             ])),
-            "number": r.get("tel", "0"),  # If telephone available, convert to int
-            "email": r.get("email", ""),
-            "rating": float(r.get("rating", 0.0)) if "rating" in r else 0.0,
-            "comments": r.get("description", ""),
-            "open_hours": r.get("hours", {}).get("display", ""),
-            "type": r.get("categories", [{}])[0].get("name", ""),
-            "key_words": [c.get("name") for c in r.get("categories", [])],
+            "number": r.get("phone", ""),  # phone as string
+            "email": "",  # Yelp does not provide email in API
+            "rating": float(r.get("rating", 0.0)),
+            "comments": "",  # Not provided
+            "open_hours": "",  # Requires extra API calls, skipping for now
+            "type": ", ".join(r.get("categories", [{}])[0].get("title", "") if r.get("categories") else ""),
+            "key_words": [c.get("title") for c in r.get("categories", [])] if r.get("categories") else [],
         })
     return datos_transformados
 
@@ -112,15 +115,15 @@ def registrar_tabla_iceberg():
     df.writeTo("my_catalog.restaurants").using("iceberg").createOrReplace()
     print("Tabla Iceberg creada o actualizada.")
 
-#Temporal function to visualize data
+# ----------------------------
+# Temporal function to visualize data
+# ----------------------------
 def visualizar_datos():
-    # Setup MinIO client
-    client = Minio("localhost:9000", access_key="minio", secret_key="minio123", secure=False)
-    bucket = "bdm-project-upc"
-    object_path = "raw/batch/foursquare/foursquare_restaurants.parquet"
-    local_file = "/tmp/foursquare_restaurants.parquet"
+    client = Minio(MINIO_ENDPOINT, access_key=MINIO_ACCESS_KEY, secret_key=MINIO_SECRET_KEY, secure=False)
+    bucket = BUCKET_NAME
+    object_path = RAW_PATH
+    local_file = "/tmp/yelp_restaurants.parquet"
 
-    # Download Parquet from MinIO
     try:
         client.fget_object(bucket, object_path, local_file)
         print(f"Archivo descargado desde MinIO: {local_file}")
@@ -128,7 +131,6 @@ def visualizar_datos():
         print(f"Error descargando desde MinIO: {e}")
         return
 
-    # Load and display with pandas
     try:
         df = pd.read_parquet(local_file)
         pd.set_option("display.max_columns", None)
@@ -140,64 +142,50 @@ def visualizar_datos():
 # ----------------------------
 # Main Function
 # ----------------------------
-""" def main():
-    ciudad = "Barcelona"
-    print("Consultando Foursquare...")
-    datos_fsq = obtener_restaurantes_foursquare(ciudad)
-
-    for r in datos_fsq:
-        fsq_id = r.get("fsq_id")
-        r["photo_urls"] = obtener_fotos_restaurante_foursquare(fsq_id)
-
-    datos_formateados = transformar_datos(datos_fsq)
-    guardar_en_minio_parquet(datos_formateados)
-    registrar_tabla_iceberg() """
-
-#Temporal main to visualize data
 def main():
     ciudad = "Barcelona"
-    nombre_archivo_s3 = "foursquare_restaurants.parquet"
+    nombre_archivo_s3 = "yelp_restaurants.parquet"
 
-    print("Consultando Foursquare...")
+    print("Consultando Yelp...")
     datos = []
-    datos_fsq = obtener_restaurantes_foursquare(ciudad)
+    datos_yelp = obtener_restaurantes_yelp(ciudad)
 
-    for r in datos_fsq:
-        fsq_id = r.get("fsq_id")
-        r["photo_urls"] = obtener_fotos_restaurante_foursquare(fsq_id)
+    for r in datos_yelp:
+        business_id = r.get("id")
+        r["photo_urls"] = obtener_fotos_restaurante_yelp(business_id)
         datos.append(r)
 
-    # Format data to your required schema
     formateados = []
     for r in datos:
-        loc = r.get("location", {})
+        location = r.get("location", {})
         direccion = ", ".join(filter(None, [
-            loc.get("address"), loc.get("locality"), loc.get("region"),
-            loc.get("postcode"), loc.get("country")
+            location.get("address1"),
+            location.get("city"),
+            location.get("state"),
+            location.get("zip_code"),
+            location.get("country")
         ]))
         formateados.append({
             "name": r.get("name", ""),
             "direction": direccion,
-            "number": r.get("tel", 0),
-            "email": "",  # not available from Foursquare
+            "number": r.get("phone", ""),
+            "email": "",  # not available from Yelp
             "rating": r.get("rating", 0.0),
             "comments": "",  # not available
-            "open_hours": "",  # not available
-            "type": ", ".join([c["name"] for c in r.get("categories", [])]) if r.get("categories") else "",
-            "key_words": [c["name"] for c in r.get("categories", [])] if r.get("categories") else []
+            "open_hours": "",  # not available in this scope
+            "type": ", ".join([c["title"] for c in r.get("categories", [])]) if r.get("categories") else "",
+            "key_words": [c["title"] for c in r.get("categories", [])] if r.get("categories") else []
         })
 
     # Save as Parquet locally
-    import pandas as pd
     df = pd.DataFrame(formateados)
-    local_file = "/tmp/foursquare_restaurants.parquet"
+    local_file = "/tmp/yelp_restaurants.parquet"
     df.to_parquet(local_file, index=False)
 
     # Upload to MinIO
-    from minio import Minio
-    client = Minio("localhost:9000", "minio", "minio123", secure=False)
-    bucket = "bdm-project-upc"
-    object_path = f"raw/batch/foursquare/{nombre_archivo_s3}"
+    client = Minio(MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, secure=False)
+    bucket = BUCKET_NAME
+    object_path = f"raw/batch/yelp/{nombre_archivo_s3}"
     if not client.bucket_exists(bucket):
         client.make_bucket(bucket)
     client.fput_object(bucket, object_path, local_file)
@@ -205,8 +193,6 @@ def main():
 
     # Show data
     visualizar_datos()
-
-
 
 if __name__ == "__main__":
     main()
