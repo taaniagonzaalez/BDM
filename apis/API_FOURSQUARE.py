@@ -12,7 +12,7 @@ FOURSQUARE_API_KEY = "fsq33IomRNg9y+33yeWoBDYszC3kkKYDEysBR3/Wyf8kJC0="
 FOURSQUARE_BASE_URL = "https://api.foursquare.com/v3/places/search"
 FOURSQUARE_PHOTOS_URL = "https://api.foursquare.com/v3/places/{fsq_id}/photos"
 
-MINIO_ENDPOINT = "localhost:9000"
+MINIO_ENDPOINT = "host.docker.internal:9000"
 MINIO_ACCESS_KEY = "minio"
 MINIO_SECRET_KEY = "minio123"
 BUCKET_NAME = "bdm-project-upc"
@@ -115,7 +115,7 @@ def registrar_tabla_iceberg():
 #Temporal function to visualize data
 def visualizar_datos():
     # Setup MinIO client
-    client = Minio("localhost:9000", access_key="minio", secret_key="minio123", secure=False)
+    client = Minio("host.docker.internal:9000", access_key="minio", secret_key="minio123", secure=False)
     bucket = "bdm-project-upc"
     object_path = "raw/batch/foursquare/foursquare_restaurants.parquet"
     local_file = "/tmp/foursquare_restaurants.parquet"
@@ -195,7 +195,7 @@ def main():
 
     # Upload to MinIO
     from minio import Minio
-    client = Minio("localhost:9000", "minio", "minio123", secure=False)
+    client = Minio("host.docker.internal:9000", "minio", "minio123", secure=False)
     bucket = "bdm-project-upc"
     object_path = f"raw/batch/foursquare/{nombre_archivo_s3}"
     if not client.bucket_exists(bucket):
