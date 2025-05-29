@@ -3,6 +3,7 @@ pandas
 python-dotenv
 s3fs
 minio
+numpy
 requests
 pyarrow>=10.0.1,<10.1.0
 pyspark==3.5.1
