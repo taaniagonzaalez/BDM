@@ -13,8 +13,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server --console-address ":9001" http://minio{1...4}/data
-    networks:
-      - airflow-minio-net
+
 
   minio2:
     image: minio/minio
@@ -25,8 +24,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server --console-address ":9001" http://minio{1...4}/data
-    networks:
-      - airflow-minio-net
+
 
   minio3:
     image: minio/minio
@@ -37,8 +35,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server --console-address ":9001" http://minio{1...4}/data
-    networks:
-      - airflow-minio-net
+
 
   minio4:
     image: minio/minio
@@ -49,8 +46,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     command: server --console-address ":9001" http://minio{1...4}/data
-    networks:
-      - airflow-minio-net
+
 
 volumes:
   minio-data1:
@@ -58,6 +54,3 @@ volumes:
   minio-data3:
   minio-data4:
 
-networks:
-  airflow-minio-net:
-    external: true
