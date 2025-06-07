@@ -1,34 +1,56 @@
-import os
 import requests
-import boto3
 from datetime import datetime
-from dotenv import load_dotenv
+from minio import Minio
+from minio.error import S3Error
+import os
 
+# ----------------------------
+# Configuration
+# ----------------------------
+MINIO_ENDPOINT = "host.docker.internal:9000"
+MINIO_ACCESS_KEY = "minio"
+MINIO_SECRET_KEY = "minio123"
+BUCKET_NAME = "bdm-project-upc"
+OBJECT_PATH = "raw/batch/barcelona/barcelona_raw_restaurants.csv"
+
+# ----------------------------
+# Download Function
+# ----------------------------
 def download_bcn_file():
-    # URL of the file to download
     file_url = "https://opendata-ajuntament.barcelona.cat/data/dataset/b4d2cc2f-67dc-481a-a7cb-1999fd0d5740/resource/bce0486e-370e-4a72-903f-024ba8902ae1/download"
-
-    # Send GET request and return the content
     response = requests.get(file_url)
-    response.raise_for_status()  # raise exception if there's an error
+    response.raise_for_status()
     return response.content
 
-def main():
-    load_dotenv()
-    s3 = boto3.client('s3')
-    bucket_name = "bdm-project-upc"
-
-    current_date = datetime.now().strftime('%Y%m%d')
-    s3_key = f'raw/batch/barcelona/barcelona_raw_restaurants.csv'
-
-    file_content = download_bcn_file()
-
-    # Upload to S3
-    s3.put_object(
-        Bucket=bucket_name,
-        Key=s3_key,
-        Body=file_content,
-        ContentType='text/csv'
+# ----------------------------
+# Upload Function
+# ----------------------------
+def upload_to_minio(content, bucket, object_name):
+    client = Minio(
+        MINIO_ENDPOINT,
+        access_key=MINIO_ACCESS_KEY,
+        secret_key=MINIO_SECRET_KEY,
+        secure=False
     )
 
-    print(f"[S3] File uploaded to s3://{bucket_name}/{s3_key}")
+    # Ensure the bucket exists
+    if not client.bucket_exists(bucket):
+        client.make_bucket(bucket)
+
+    # Save file locally before uploading (MinIO requires a file path or stream)
+    local_path = "/tmp/barcelona_raw_restaurants.csv"
+    with open(local_path, "wb") as f:
+        f.write(content)
+
+    client.fput_object(bucket, object_name, local_path, content_type="text/csv")
+    print(f"[MinIO] File uploaded to s3://{bucket}/{object_name}")
+
+# ----------------------------
+# Main
+# ----------------------------
+def main():
+    content = download_bcn_file()
+    upload_to_minio(content, BUCKET_NAME, OBJECT_PATH)
+
+if __name__ == "__main__":
+    main()

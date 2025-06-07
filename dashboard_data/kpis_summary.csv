@@ -1,0 +1,67 @@
+type,restaurant_count,average_rating,most_popular
+"Tapas Bars, Spanish",3,4.533333333333333,True
+Tapas Restaurant,3,0.0,False
+Spanish,3,4.533333333333333,False
+Tapas Bars,3,4.533333333333333,False
+Breakfast Spot,3,0.0,False
+Steakhouses,2,4.7,False
+Spanish Restaurant,2,0.0,False
+Pizzeria,2,0.0,False
+"Mediterranean Restaurant, Tapas Restaurant",2,0.0,False
+"Spanish, Modern European",1,4.7,False
+Tapas/Small Plates,1,4.6,False
+"Tapas/Small Plates, Tapas Bars, Cocktail Bars",1,4.4,False
+"Arroceria / Paella, Tapas Bars, Cocktail Bars",1,4.6,False
+"Bars, Spanish",1,4.5,False
+"Tapas/Small Plates, Tapas Bars, Spanish",1,4.6,False
+"Breakfast & Brunch, Cafeteria",1,4.5,False
+Italian,1,4.9,False
+"Tapas Bars, Beer Bar",1,4.8,False
+"Breakfast & Brunch, Juice Bars & Smoothies",1,4.8,False
+"Cafeteria, Italian, Mediterranean",1,4.8,False
+"Mexican, Tapas Bars",1,4.4,False
+Filipino,1,4.8,False
+"Tapas/Small Plates, Spanish",1,4.5,False
+"Catalan, Seafood",1,4.4,False
+"Breakfast & Brunch, Cafeteria, Sandwiches",1,4.5,False
+Vegetarian,1,4.7,False
+"Mediterranean, Tapas/Small Plates, Bars",1,4.5,False
+"Tapas Bars, Tabernas, Tapas/Small Plates",1,4.5,False
+"Modern European, Salad, Breakfast & Brunch",1,4.4,False
+"Breakfast & Brunch, Cafeteria, Mediterranean",1,4.4,False
+"Tapas Bars, Breakfast & Brunch",1,4.5,False
+"American, Spanish, Cocktail Bars",1,4.5,False
+Pizza,1,4.9,False
+"Seafood, Spanish",1,4.3,False
+"Mediterranean, Breakfast & Brunch",1,4.6,False
+"Bars, Tapas/Small Plates",1,4.8,False
+"Seafood Restaurant, Tapas Restaurant",1,0.0,False
+"Mediterranean, Steakhouses",1,4.9,False
+"Bakery, Deli",1,0.0,False
+"Mediterranean Restaurant, Seafood Restaurant, Spanish Restaurant",1,0.0,False
+"Diner, Tapas Restaurant",1,0.0,False
+Mediterranean Restaurant,1,0.0,False
+"Pizzeria, Italian Restaurant",1,0.0,False
+"Bakery, Restaurant",1,0.0,False
+Mexican Restaurant,1,0.0,False
+"Falafel Restaurant, Syrian Restaurant",1,0.0,False
+Restaurant,1,0.0,False
+"Café, Deli",1,0.0,False
+"Bar, Tapas Restaurant",1,0.0,False
+Italian Restaurant,1,0.0,False
+"Burger Joint, Mediterranean Restaurant, Vegan and Vegetarian Restaurant",1,0.0,False
+"Catalan Restaurant, Mediterranean Restaurant, Spanish Restaurant",1,0.0,False
+"Mediterranean, Tapas Bars, Galician",1,4.6,False
+"Seafood Restaurant, Spanish Restaurant, Steakhouse",1,0.0,False
+Argentinian Restaurant,1,0.0,False
+Vegan and Vegetarian Restaurant,1,0.0,False
+"Tapas Bars, Spanish, Catalan",1,4.3,False
+"Tapas Bars, Catalan",1,4.5,False
+"Spanish, Signature Cuisine, Specialty Food",1,4.5,False
+"Catalan, Signature Cuisine",1,4.4,False
+Breakfast & Brunch,1,4.4,False
+"Mediterranean, Catalan, Tapas Bars",1,4.9,False
+"Breakfast & Brunch, Desserts, Acai Bowls",1,4.2,False
+"Spanish, Tapas/Small Plates",1,4.3,False
+"Tapas Bars, Pubs",1,4.6,False
+"Tea Rooms, Mediterranean",1,4.7,False

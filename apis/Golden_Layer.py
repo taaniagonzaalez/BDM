@@ -93,6 +93,7 @@ def main():
     write_parquet_to_minio(client, df_all, OUTPUT_PATH_ALL)
     write_parquet_to_minio(client, cuisine_kpi, OUTPUT_PATH_CUISINE)
     write_parquet_to_minio(client, rating_kpi, OUTPUT_PATH_SOURCE)
+    
 
     print("Golden Layer KPIs saved successfully (pandas version).")
 

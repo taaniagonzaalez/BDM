@@ -1,0 +1,85 @@
+restaurant_id,name,direction,number,email,rating,comments,open_hours,type,key_words,photo_urls
+58541466-2961-4e46-b386-2ca29796a74f,La Flauta,"Aribau, 23, Barcelona, Catalunya, 08011, ES",0,,0.0,,,"Seafood Restaurant, Tapas Restaurant",['Seafood Restaurant' 'Tapas Restaurant'],
+4c6fc635-1a83-4dc9-a4f0-b524127d7aac,Cervecería Catalana,"Calle Mallorca, 236, Barcelona, Catalunya, 08008, ES",0,,0.0,,,Tapas Restaurant,['Tapas Restaurant'],
+f384b5aa-1640-454e-ab75-043b084a25a7,Vinitus,"Carrer del Consell de Cent, 333, Barcelona, Catalunya, 08007, ES",0,,0.0,,,Tapas Restaurant,['Tapas Restaurant'],
+55d6e55e-0344-489f-b5aa-f5992e37b241,Porvenir,"Villarroel, 157, Barcelona, Catalunya, 08036, ES",0,,0.0,,,"Mediterranean Restaurant, Seafood Restaurant, Spanish Restaurant",['Mediterranean Restaurant' 'Seafood Restaurant' 'Spanish Restaurant'],
+93823d77-1795-43e4-9591-d7858a783fdd,Ciutat Comtal,"Rambla de Catalunya, 18, Barcelona, Catalunya, 08007, ES",0,,0.0,,,"Diner, Tapas Restaurant",['Diner' 'Tapas Restaurant'],
+9ed125fb-42d1-4efc-982f-2b2cd9ffa949,Forn Mistral,"Ronda de Sant Antoni, 96, Barcelona, Catalunya, 08001, ES",0,,0.0,,,"Bakery, Restaurant",['Bakery' 'Restaurant'],
+966b228d-0a05-4412-b21f-456229da8905,Honest Greens Plaça Catalunya,"Rambla Catalunya, 3, Barcelona, Catalunya, 08007, ES",0,,0.0,,,Mediterranean Restaurant,['Mediterranean Restaurant'],
+f31de5f6-3334-453a-9489-d4a30366beec,Parking Pizza,"Calle Londres, 98, Barcelona, Catalunya, 08036, ES",0,,0.0,,,"Pizzeria, Italian Restaurant",['Pizzeria' 'Italian Restaurant'],
+2aaa1104-b5f6-4e4a-a1cc-64dfa461f14a,Baluard,"Calle de Provença, 279, Barcelona, Catalunya, 08037, ES",0,,0.0,,,"Bakery, Restaurant",['Bakery' 'Restaurant'],
+91900f46-caf3-4938-a94e-26eb91017461,Baluard,"Pau Claris, 188, Barcelona, Catalunya, 08037, ES",0,,0.0,,,"Bakery, Restaurant",['Bakery' 'Restaurant'],
+fad1d497-0d67-42cd-854d-9e19db6f4f8c,Ugot Bruncherie,"Calle Viladomat, 138, Barcelona, Catalunya, 08015, ES",0,,0.0,,,Breakfast Spot,['Breakfast Spot'],
+5d5e1845-7aff-4c6e-89cc-1444be38343d,Zenith Brunch & Cocktails,"Gran Vía de Les Corts Catalanes, 633, Barcelona, Catalunya, 08007, ES",0,,0.0,,,Breakfast Spot,['Breakfast Spot'],
+69181444-26e9-43c1-bc7f-b476241c0841,El Asador de Aranda,"Calle Pau Claris, 70, Barcelona, Catalunya, 08010, ES",0,,0.0,,,"BBQ Joint, Seafood Restaurant, Spanish Restaurant",['BBQ Joint' 'Seafood Restaurant' 'Spanish Restaurant'],
+1930297f-e7fb-4686-b756-f65e11df9822,The Egg Lab,"Carrer de Sepúlveda, 80, Barcelona, Catalunya, 08015, ES",0,,0.0,,,Breakfast Spot,['Breakfast Spot'],
+3279a403-758d-4641-92d7-53711a18277f,La Caravana,"Carrer de Mozart, 17, Barcelona, Catalunya, 08012, ES",0,,0.0,,,"Falafel Restaurant, Syrian Restaurant",['Falafel Restaurant' 'Syrian Restaurant'],
+c848b41f-bc1a-4ab0-b3d7-6dcde1a14ee3,Cruix,"Carrer D'Entença, 57, Barcelona, Catalunya, 08015, ES",0,,0.0,,,Restaurant,['Restaurant'],
+28669248-2d5b-41f9-ac50-7c5dc4bb3b9f,Parking Pizza,"Passeig Sant Joan, 56, Barcelona, Catalunya, ES",0,,0.0,,,Pizzeria,['Pizzeria'],
+21e71937-50dd-4421-92f5-5be83b50dc54,Casa Lolea Barcelona,"Carrer de Sant Pere Més Alt, 49, Barcelona, Catalunya, 08003, ES",0,,0.0,,,"Mediterranean Restaurant, Tapas Restaurant",['Mediterranean Restaurant' 'Tapas Restaurant'],
+4ade56fc-4921-4035-abb1-4686b7b0f07c,Bar Cañete,"Unió, 17, Barcelona, Catalunya, 08001, ES",0,,0.0,,,"Bar, Tapas Restaurant",['Bar' 'Tapas Restaurant'],
+f7a1db8d-882f-4ae9-bb7e-e01f6a1a7aa4,Maoz Vegetarian,"Carrer de Ferran, 13, Barcelona, Catalunya, 08002, ES",0,,0.0,,,"Falafel Restaurant, Middle Eastern Restaurant, Vegan and Vegetarian Restaurant","['Falafel Restaurant' 'Middle Eastern Restaurant'
+ 'Vegan and Vegetarian Restaurant']",
+e9abb968-54e3-433e-887f-dcd83052153d,Quimet & Quimet,"Poeta Cabanyes, 25, Barcelona, Catalunya, 08004, ES",0,,0.0,,,Tapas Restaurant,['Tapas Restaurant'],
+38b053c1-9650-4202-949b-5c522c764ab4,El Xampanyet,"Carrer de Montcada, 22, Barcelona, Catalunya, 08003, ES",0,,0.0,,,"Wine Bar, Tapas Restaurant",['Wine Bar' 'Tapas Restaurant'],
+06d31678-6fc8-407c-88fc-958363085119,Cecconi's,"Passeig de Colom, 20, Barcelona, Catalunya, 08002, ES",0,,0.0,,,Italian Restaurant,['Italian Restaurant'],
+57cb34dc-f099-4c20-a5ce-522df4cbb725,Menssana,"Carrer Sardenya, 48, Barcelona, Catalunya, 08005, ES",0,,0.0,,,"Burger Joint, Mediterranean Restaurant, Vegan and Vegetarian Restaurant","['Burger Joint' 'Mediterranean Restaurant'
+ 'Vegan and Vegetarian Restaurant']",
+a08df8be-88d9-472d-adeb-ca8d1bc5ee14,Comida de Olla,"Praga, 1, Barcelona, Catalunya, 08024, ES",0,,0.0,,,Restaurant,['Restaurant'],
+49ea2ec2-f680-4c50-8c34-67e539f29d98,Forn Baluard,"Carrer del Baluart, 38, Barcelona, Catalunya, 08003, ES",0,,0.0,,,"Bakery, Deli",['Bakery' 'Deli'],
+815d2669-38ff-41f0-8f81-42710b22b3fa,Granja Elena,"Passeig de la Zona Franca, 228, Barcelona, Catalunya, 08038, ES",0,,0.0,,,"Catalan Restaurant, Mediterranean Restaurant, Spanish Restaurant",['Catalan Restaurant' 'Mediterranean Restaurant' 'Spanish Restaurant'],
+6f205085-2b5b-4f08-b897-2ba3e03c5360,El Asador de Aranda,"Avenida Tibidabo, 31, Barcelona, Catalunya, 08022, ES",0,,0.0,,,"Seafood Restaurant, Spanish Restaurant, Steakhouse",['Seafood Restaurant' 'Spanish Restaurant' 'Steakhouse'],
+82632312-956f-4b25-8ddc-02ae3c93aaeb,Can Dendê,"Ciutat de Granada, 44, Barcelona, Catalunya, 08005, ES",0,,0.0,,,Breakfast Spot,['Breakfast Spot'],
+6488c5c1-dd93-4132-b323-1b49ef8a1c92,La Tavernícola,"Carrer de Roc Boronat, 70, Barcelona, Catalunya, 08005, ES",0,,0.0,,,Argentinian Restaurant,['Argentinian Restaurant'],
+964946ed-324c-4a51-a1b6-eee74e6fabde,Little Fern,"Calle Pere IV, 168, Barcelona, Catalunya, 08005, ES",0,,0.0,,,Vegan and Vegetarian Restaurant,['Vegan and Vegetarian Restaurant'],
+72a6ac4c-ad61-43e4-80fd-a9c459ef213a,El Asador de Aranda,"Londres, 94, Barcelona, Catalunya, 08014, ES",0,,0.0,,,Spanish Restaurant,['Spanish Restaurant'],
+1a96cf9d-c19f-4840-bdcf-bb3f915abc25,Cerveseria Catalana,"Carrer de Mallorca, 236, Barcelona, B, 08008, ES",+34932160368,,4.3,,,Spanish,['Spanish'],[]
+f76001c9-659b-4cda-9934-5cab3fef6ead,Ciutat Comtal,"Rambla de Catalunya, 18, Barcelona, B, 08007, ES",+34933181997,,4.3,,,"Tapas Bars, Spanish, Catalan",['Tapas Bars' 'Spanish' 'Catalan'],[]
+52fbbef0-0c72-4af5-94e3-36d9dbf95033,Vinitus,"Carrer Del Consell de Cent, 333, Barcelona, B, 08007, ES",+34933632127,,4.6,,,Tapas Bars,['Tapas Bars'],[]
+e6885a7b-c4ee-4d93-83c3-f94992a98861,Taquerías Tamarindo,"Carrer de Aragón, 236, Barcelona, B, 08007, ES",+34930023774,,4.4,,,"Mexican, Tapas Bars",['Mexican' 'Tapas Bars'],[]
+d677dc33-3845-45b6-a29a-d5d04ed983d2,Tapeo,"Carrer de Montcada, 29, Barcelona, B, 08003, ES",+34933101607,,4.5,,,"Tapas Bars, Catalan",['Tapas Bars' 'Catalan'],[]
+d73b62b1-7cc1-4514-a667-893ebcd82583,My Fucking Restaurant,"Carrer Nou de la Rambla, 35, Barcelona, B, 08001, ES",+34936397827,,4.4,,,"Catalan, Signature Cuisine",['Catalan' 'Signature Cuisine'],[]
+29170d56-ae2c-48bc-b012-b446a4f1f2ca,El Asador de Aranda,"Calle Pau Claris, 70, Barcelona, B, 08010, ES",+34933425577,,4.7,,,Steakhouses,['Steakhouses'],[]
+97bdff3b-11fe-4280-8950-c777b13e746b,Le Romane,"Carrer de Muntaner, 103, Barcelona, B, 08011, ES",+34937069803,,4.9,,,Italian,['Italian'],[]
+de214416-2a7d-4ae3-a735-f8d58151ab3f,La Taverneta,"Carrer de Francesc Pujols, 6, Barcelona, B, 08002, ES",+34930111147,,4.9,,,"Mediterranean, Catalan, Tapas Bars",['Mediterranean' 'Catalan' 'Tapas Bars'],[]
+3f2a3753-f06a-4741-880a-bcef4df94781,Arcano Restaurant Barcelona ,"Carrer dels Mercaders, 10, Barcelona, B, 08003, ES",+34932956467,,4.5,,,"Spanish, Signature Cuisine, Specialty Food",['Spanish' 'Signature Cuisine' 'Specialty Food'],[]
+05a41b65-a22b-4307-8dac-7a0848d0c85f,Sensi,"Carrer Ample, 26, Barcelona, B, 08002, ES",+34932956588,,4.4,,,"Tapas/Small Plates, Tapas Bars, Cocktail Bars",['Tapas/Small Plates' 'Tapas Bars' 'Cocktail Bars'],[]
+819c3f04-82bc-495c-94e7-eb8f4e7531c4,Bodega Biarritz 1881,"Carrer del Vidre, 8, Barcelona, B, 08002, ES",+34618677927,,4.5,,,"Bars, Spanish",['Bars' 'Spanish'],[]
+9a11def2-2123-4924-858a-8e1078d1c62d,Micu Maku ,"Carrer d'Aribau, 22, Barcelona, B, 08011, ES",+34931584198,,4.6,,,"Arroceria / Paella, Tapas Bars, Cocktail Bars",['Arroceria / Paella' 'Tapas Bars' 'Cocktail Bars'],[]
+002da39c-8c21-47c9-9d57-f5f9ada16f15,TAPS,"Carrer de Mare de Deu del Remei, 53, Barcelona, B, 08004, ES",+34930061039,,4.8,,,"Tapas Bars, Beer Bar",['Tapas Bars' 'Beer Bar'],[]
+b4076065-79de-4b26-800c-0a3c9fd46d3c,Cañete,"Carrer de la Unió, 17, Barcelona, B, 08001, ES",+34932703458,,4.6,,,"Tapas/Small Plates, Tapas Bars, Spanish",['Tapas/Small Plates' 'Tapas Bars' 'Spanish'],[]
+da58f58f-930d-46a6-af20-6e90ecab0876,CocoVail Beer Hall Barcelona,"Carrer d'Arago, 284, Barcelona, B, 08009, ES",+34937822479,,4.4,,,"Beer Bar, Burgers, Sandwiches",['Beer Bar' 'Burgers' 'Sandwiches'],[]
+226e2e51-f997-477a-be3b-1a5b452a507c,Guell,"Calle Nou de la Rambla, 20, Barcelona, B, 08001, ES",+34934122570,,4.5,,,"Tapas/Small Plates, Spanish",['Tapas/Small Plates' 'Spanish'],[]
+df746e34-9daa-453f-9061-702121233e96,La Pepita,"Carrer de Còrsega, 343, Barcelona, B, 08037, ES",+34932384893,,4.6,,,"Tapas Bars, Pubs",['Tapas Bars' 'Pubs'],[]
+39cf3097-98f9-40f6-b11b-6ca70c6301bf,El Macareno,"Carrer de les Sitges, 10, Barcelona, B, 08001, ES",+34933181586,,4.8,,,"Bars, Tapas/Small Plates",['Bars' 'Tapas/Small Plates'],[]
+1f29c1b7-c451-447f-9fa1-3cf4f504b857,La Flauta,"Carrer d'Aribau, 23, Barcelona, B, 08011, ES",+34933237038,,4.3,,,"Spanish, Tapas/Small Plates",['Spanish' 'Tapas/Small Plates'],[]
+9562a6ab-1310-4949-aa4c-1ad4ef77252c,The Venue Steakhouse,"Carrer del Rosselló, 365, Barcelona, B, 08025, ES",+34936399675,,4.7,,,Steakhouses,['Steakhouses'],[]
+3e13cf08-b9af-45e3-9111-377f9d5471a5,Takumi Ramen,"Carrer de Balmes, 59, Barcelona, B, 08007, ES",+34936250814,,4.5,,,Ramen,['Ramen'],[]
+8ed596b5-ffe8-4035-b0ce-37089b94a02d,Toc De Gralla,"Carrer d'Aribau, 65, Barcelona, B, 08011, ES",+34696960987,,4.8,,,Spanish,['Spanish'],[]
+7e66457a-b489-4ae1-ad49-217f195f0495,Babula,"Carrer de Pau Claris, 139, Barcelona, B, 08009, ES",+34933826096,,4.8,,,"Cocktail Bars, Tapas Bars",['Cocktail Bars' 'Tapas Bars'],[]
+723bc193-74db-4a4c-81f3-f1800eb6be54,9 Nine,"Carrer València, 334, Barcelona, B, 08009, ES",+34936763222,,4.9,,,"Mediterranean, Steakhouses",['Mediterranean' 'Steakhouses'],[]
+a7c9e0b9-45e2-4065-8430-8fcc58a2282a,Salterio,"Carrer de Sant Domènec del Call, 4, Barcelona, B, 08002, ES",+34933025028,,4.8,,,"Tea Rooms, Mediterranean",['Tea Rooms' 'Mediterranean'],[]
+fd8c9634-0e42-4d6a-ac4a-e9e2a446e26a,Casa Lolea,"Carrer de Sant Pere Mes Alt, 49, Barcelona, B, 08003, ES",+34936241016,,4.6,,,Tapas/Small Plates,['Tapas/Small Plates'],[]
+c4154c8c-ca67-4490-8468-b5ae06b2d323,Somorrostro,"Carrer de Sant Carles, 11, Barcelona, B, 08003, ES",+34932250010,,4.4,,,"Catalan, Seafood",['Catalan' 'Seafood'],[]
+a6f03c87-572c-404e-b522-fcbb8e0ffb34,Brunch & Cake,"Carrer d'Enric Granados, 19, Barcelona, B, 08007, ES",+34931383572,,4.2,,,"Breakfast & Brunch, Desserts, Acai Bowls",['Breakfast & Brunch' 'Desserts' 'Acai Bowls'],[]
+01a666bb-ce81-4a34-8f0c-1d99bd044d00,Telefèric,"Plaça Doctor Letamendi, 27, Barcelona, B, 08007, ES",+34934511641,,4.2,,,"Tapas/Small Plates, Spanish, Tapas Bars",['Tapas/Small Plates' 'Spanish' 'Tapas Bars'],[]
+fdc4b910-a17f-41b6-93bb-9eeb8555ed33,Chao Pescao,"Carrer del Consell de Cent, 318, Barcelona, B, 08007, ES",+34931640589,,4.3,,,Seafood,['Seafood'],[]
+f4b3fbe3-be27-4685-9265-7af05cc1f420,Cera 23,"Carrer de la Cera, 23, Barcelona, B, 08001, ES",+34934420808,,4.7,,,"Spanish, Modern European",['Spanish' 'Modern European'],[]
+1723976d-286e-4926-a088-25fad7ad9302,Kasarap,"Carrer del Consell de Cent, 141, Barcelona, B, 08015, ES",+34634885693,,4.8,,,Filipino,['Filipino'],[]
+30f855c9-e6fb-4bec-ab72-ddb298873ce6,Arume,"Carrer d'En Botella, 11, Barcelona, B, 08007, ES",+34933154872,,4.6,,,"Mediterranean, Tapas Bars, Galician",['Mediterranean' 'Tapas Bars' 'Galician'],[]
+f1adc606-7fd9-41f1-aa00-36d476c789b6,Macchina,"Carrer de Balmes, 12, Barcelona, B, 08007, ES",+34938072067,,4.3,,,"Bars, Italian",['Bars' 'Italian'],[]
+69479f47-a349-4a16-abbe-162cd6070ae0,2254,"Consell de Cent, 335, Barcelona, B, 08007, ES",+34935286002,,4.5,,,"French, Catalan, Italian",['French' 'Catalan' 'Italian'],[]
+2f7315aa-ab0d-4ea5-9e8d-84df7b8d582e,La Alcoba Azul,"Carrer de Sant Domenec del Call, 14, Barcelona, B, 08002, ES",+34933028141,,4.6,,,"Tapas Bars, Cocktail Bars",['Tapas Bars' 'Cocktail Bars'],[]
+4a49110d-2650-4fa3-b8a9-8a711e0bfa6b,Paco Alcalde,"Carrer de l'Almirall Aixada, 12, Barcelona, B, 08003, ES",+34932215026,,4.3,,,"Seafood, Spanish",['Seafood' 'Spanish'],[]
+9c343678-b745-4649-a7e4-65f50efc245b,Story,"Carrer del Pou de la Cadena, 8, Barcelona, B, 08003, ES",+34930114965,,4.7,,,"Mediterranean, Cocktail Bars",['Mediterranean' 'Cocktail Bars'],[]
+f0f12d7c-ad70-485a-843d-83fd326f22a4,La Guapa,"Carrer del Comte d'Urgell, 146, Barcelona, B, 08011, ES",+34660539144,,4.6,,,"Vermouth Bars, Tapas Bars",['Vermouth Bars' 'Tapas Bars'],[]
+7b3f054c-334a-4357-b697-23de16961d63,Milk Bar & Bistro,"Carrer d'en Gignàs, 21, Barcelona, B, 08002, ES",+34932680922,,4.5,,,"American, Spanish, Cocktail Bars",['American' 'Spanish' 'Cocktail Bars'],[]
+c4ad407c-10a2-4c37-95ec-a998015928e0,La Esquina,"Carrer de Bergara, 2, Barcelona, B, 08002, ES",+34937687242,,4.5,,,"Mediterranean, Tapas/Small Plates, Bars",['Mediterranean' 'Tapas/Small Plates' 'Bars'],[]
+67a7a594-8718-467d-9c32-a1381ab3cf12,Boa-Bao,"Plaça del Dr. Letamendi, 1, Barcelona, B, 08007, ES",+34934544332,,4.3,,,"Cocktail Bars, Asian Fusion",['Cocktail Bars' 'Asian Fusion'],[]
+036d8013-e5e0-4b31-adf2-ea1389be8420,Ziryab Fusion Tapas Bar,"Carrer de Grunyí, 5, Barcelona, B, 08003, ES",+34931874210,,4.9,,,"Tapas/Small Plates, Mediterranean, Tabernas",['Tapas/Small Plates' 'Mediterranean' 'Tabernas'],[]
+cfe42c49-ea89-4167-bddf-5e06b7dbd5b2,El Pachuco,"Carrer de Sant Pau, 110, Barcelona, B, 08001, ES",+34931796805,,4.6,,,Mexican,['Mexican'],[]
+3fae111d-c952-4c54-b2e1-65be3b43e834,Pirineu en Boca,"Carrer de Girona, 17, Barcelona, B, 08010, ES",+34931296987,,4.5,,,Spanish,['Spanish'],[]
+76bdaba4-392f-4e9f-bfe9-dda233d0da02,Restaurant La Tasqueta de Blai,"Carrer de Blai, 17, Barcelona, B, 08004, ES",+34930130318,,4.5,,,"Tapas Bars, Tabernas, Tapas/Small Plates",['Tapas Bars' 'Tabernas' 'Tapas/Small Plates'],[]
+8819deff-bfa8-44cd-9aef-c84f551d5128,Bo de Boqueria,"Carrer Petxina, 5-7, Barcelona, B, 08001, ES",+34635051511,,4.5,,,"Spanish, Mediterranean",['Spanish' 'Mediterranean'],[]
+1d792f0d-2551-46c7-b392-6245adfb4b87,La Paella de Su,"Avinguda Diagonal, 436, Barcelona, B, 08037, ES",+34931545011,,4.2,,,Arroceria / Paella,['Arroceria / Paella'],[]
+4b308397-c61e-4ce4-97b2-25a8cc25531d,Paisano Bistró ,"Carrer de Lepant, 277, Barcelona, B, 08013, ES",+34935250471,,4.8,,,"Cafeteria, Italian, Mediterranean",['Cafeteria' 'Italian' 'Mediterranean'],[]

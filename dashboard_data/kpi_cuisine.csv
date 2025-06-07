@@ -1,0 +1,55 @@
+type,restaurant_count,avg_rating
+tapas bars,16,4.5625
+spanish,14,4.464285714285714
+tapas/small plates,10,4.529999999999999
+mediterranean,9,4.733333333333333
+tapas restaurant,8,0.0
+cocktail bars,7,4.557142857142857
+catalan,6,4.5
+restaurant,5,0.0
+mediterranean restaurant,5,0.0
+spanish restaurant,5,0.0
+bakery,4,0.0
+italian,4,4.625
+bars,4,4.525
+seafood restaurant,4,0.0
+breakfast spot,4,0.0
+seafood,3,4.333333333333333
+steakhouses,3,4.766666666666667
+vegan and vegetarian restaurant,3,0.0
+falafel restaurant,2,0.0
+tabernas,2,4.7
+signature cuisine,2,4.45
+beer bar,2,4.6
+italian restaurant,2,0.0
+arroceria / paella,2,4.4
+mexican,2,4.5
+pizzeria,2,0.0
+ramen,1,4.5
+steakhouse,1,0.0
+specialty food,1,4.5
+syrian restaurant,1,0.0
+tea rooms,1,4.8
+sandwiches,1,4.4
+vermouth bars,1,4.6
+acai bowls,1,4.2
+pubs,1,4.6
+modern european,1,4.7
+argentinian restaurant,1,0.0
+asian fusion,1,4.3
+bar,1,0.0
+bbq joint,1,0.0
+breakfast & brunch,1,4.2
+burger joint,1,0.0
+burgers,1,4.4
+cafeteria,1,4.8
+catalan restaurant,1,0.0
+deli,1,0.0
+desserts,1,4.2
+diner,1,0.0
+filipino,1,4.8
+french,1,4.5
+galician,1,4.6
+american,1,4.5
+middle eastern restaurant,1,0.0
+wine bar,1,0.0

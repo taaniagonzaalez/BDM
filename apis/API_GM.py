@@ -1,99 +1,82 @@
-import numpy as np
-import random
-from datetime import datetime
-import boto3
-import os
 import pandas as pd
+import random
 import json
-from dotenv import load_dotenv
-import time
+from datetime import datetime
+from minio import Minio
+import os
 
+# ----------------------------
+# Configuration
+# ----------------------------
+MINIO_ENDPOINT = "host.docker.internal:9000"
+MINIO_ACCESS_KEY = "minio"
+MINIO_SECRET_KEY = "minio123"
+BUCKET_NAME = "bdm-project-upc"
+INPUT_CSV_PATH = "/opt/airflow/apis/Restaurant_reviews.csv"
+RAW_PATH_TEMPLATE = "raw/batch/googlemaps/date={date}/restaurant_{name}.json"
 
-"""
-
-GET FAKE REVIEWS FROM GOOGLE MAPS
-
-"""
-
-class API_GM():
-    def __init__(self, restaurant):
-        self.restaurant = restaurant
-
-    def download_kaggle_csv_to_dataframe(self):
-        path = '/opt/airflow/apis/Restaurant_reviews.csv'
-        df = pd.read_csv(path, sep=',')
-        return df
+# ----------------------------
+# Review Generator
+# ----------------------------
+class ReseñasGoogleMaps:
+    def __init__(self):
+        self.df_reviews = pd.read_csv(INPUT_CSV_PATH)
     
-    def generate_review(self):
-        # Generate a review
-
-        df = self.download_kaggle_csv_to_dataframe()
-        reviews = df[['Reviewer', 'Review', 'Rating']].to_dict(orient="records")
-        return {
-            "review_object": random.choice(reviews),
-            "timestamps": datetime.now().isoformat()
-        }
+    def generar_review(self):
+        for column in ["Review", "text"]:
+            if column in self.df_reviews.columns:
+                return self.df_reviews.sample(n=1).iloc[0][column]
+        raise ValueError("No se encontró ninguna columna válida para las reseñas ('Review' o 'text').")
     
-    def generate_multiple_reviews(self, num=10):
-        # Generate multiple reviews
-        reviews = {'restaurant': self.restaurant, 'reviews' : []}
-        for _ in range(num):
-              review = self.generate_review()
-              reviews['reviews'].append(review)
-        return reviews
-    
-    def get_current_status(self):
-        # Get a closed or opened output
-        rn = datetime.now().hour
-        if 11 <= rn <= 17 or 20 <= rn <= 00:
-             status = 'Opened'
-        else:
-             status = 'Closed'
-        return status
-    
-    def get_number_people(self):
-        # Get the number of people that are in the restaurant. With Kafka, we are going to generate a sentence saying if 
-        #there are a lot of people or not.
-        number_people = random.randint(1,100)
-        return number_people
+    def generar_multiples_reviews(self, cantidad=10):
+        return [self.generar_review() for _ in range(cantidad)]
 
-"""
-GET RESTAURANT INFO
-"""
-def get_restaurant_review(restaurant):
-    api = API_GM(restaurant)
-    return api.generate_multiple_reviews()
+# ----------------------------
+# Save to MinIO (JSON)
+# ----------------------------
+def guardar_reviews_en_minio(nombre_restaurante, reviews_json):
+    client = Minio(
+        MINIO_ENDPOINT,
+        access_key=MINIO_ACCESS_KEY,
+        secret_key=MINIO_SECRET_KEY,
+        secure=False
+    )
 
+    if not client.bucket_exists(BUCKET_NAME):
+        client.make_bucket(BUCKET_NAME)
+
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    s3_path = RAW_PATH_TEMPLATE.format(date=date_str, name=nombre_restaurante.replace(" ", "_"))
+    local_tmp_path = f"/tmp/{nombre_restaurante.replace(' ', '_')}.json"
+
+    with open(local_tmp_path, "w", encoding="utf-8") as f:
+        json.dump(reviews_json, f, ensure_ascii=False)
+
+    client.fput_object(
+        bucket_name=BUCKET_NAME,
+        object_name=s3_path,
+        file_path=local_tmp_path,
+        content_type="application/json"
+    )
+
+    print(f"[MinIO] Reseñas guardadas en s3://{BUCKET_NAME}/{s3_path}")
+
+# ----------------------------
+# Main Function
+# ----------------------------
 def main():
-    load_dotenv()
-    s3 = boto3.client('s3',
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-            region_name=os.getenv("AWS_DEFAULT_REGION")
-        )
-    bucket_name = "bdm-project-upc"
-    s3_path_bcn = 's3://bdm-project-upc/raw/batch/barcelona/barcelona_raw_restaurants.csv'
-    df = pd.read_csv(
-            s3_path_bcn,
-            sep='\t',                # separador correcto
-            encoding='utf-16'     # reconoce y elimina el BOM
-        )
-    date = datetime.now().isoformat().split("T")[0]
-    for row in df.head(3).itertuples():
-        review = get_restaurant_review(row.name)
-        s3_key = f"raw/batch/googlemaps/date={date}/restaurant_{row.name.strip()}.csv"
-        s3.put_object(
-        Bucket=bucket_name,
-        Key=s3_key,
-        Body=json.dumps(review),
-        ContentType='application/json'
-        )
-        print(f'[S3]Restaurant {row.name} uploaded correctly')
+    print("Generando reseñas simuladas de Google Maps...")
+
+    # Simulated restaurant names (adjust or fetch dynamically later)
+    nombres_restaurantes = ["Can Culleretes", "Tickets Bar", "Cal Pep"]
+
+    generador = ReseñasGoogleMaps()
+
+    for nombre in nombres_restaurantes:
+        reseñas = generador.generar_multiples_reviews()
+        guardar_reviews_en_minio(nombre, reseñas)
+
+    print("Proceso finalizado. Reseñas almacenadas en MinIO.")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-

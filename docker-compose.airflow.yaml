@@ -17,6 +17,7 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/plugins
     - ./apis:/opt/airflow/apis
     - ./requirements.txt:/requirements.txt
+    - ./Visor:/opt/airflow/Visor
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
   depends_on:
     - postgres
@@ -34,6 +35,8 @@ services:
       "
     ports:
       - "8080:8080"
+    networks:
+      - airflow-minio-net
 
   airflow-scheduler:
     <<: *airflow-common
@@ -42,6 +45,8 @@ services:
         pip install --no-cache-dir -r /requirements.txt &&
         airflow scheduler
       "
+    networks:
+      - airflow-minio-net
 
   airflow-worker:
     <<: *airflow-common
@@ -50,6 +55,8 @@ services:
         pip install --no-cache-dir -r /requirements.txt &&
         airflow celery worker
       "
+    networks:
+      - airflow-minio-net
 
   airflow-init:
     <<: *airflow-common
@@ -59,6 +66,8 @@ services:
         airflow db migrate &&
         airflow users create --username admin --firstname Admin --lastname User --role Admin --password admin --email admin@example.com
       "
+    networks:
+      - airflow-minio-net
 
   postgres:
     image: postgres:13
@@ -90,6 +99,25 @@ services:
       - minio-data:/data
     networks:
       - airflow-minio-net
+
+  streamlit:
+    image: python:3.9-slim
+    container_name: streamlit
+    command: >
+      bash -c "
+        pip install --no-cache-dir -r /requirements.txt &&
+        streamlit run /opt/airflow/Visor/dashboard.py --server.port 8501 --server.enableCORS false
+      "
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./Visor:/opt/airflow/Visor
+      - ./apis:/opt/airflow/apis
+      - ./requirements.txt:/requirements.txt
+    #networks:
+    #  - airflow-minio-net
+    #depends_on:
+    #  - minio
 
 volumes:
   postgres-db-volume:
