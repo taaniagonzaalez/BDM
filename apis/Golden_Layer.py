@@ -16,12 +16,6 @@ RESTAURANTS_PATH = "silver_layer/combined_restaurants.parquet"
 SEARCHES_PATH = "silver_layer/searches.parquet"
 REGISTRATION_PATH = "silver_layer/registrations.parquet"
 
-OUTPUT_PATH_ALL = "golden_layer/restaurants_kpi.parquet"
-OUTPUT_KPI_1 = "golden_layer/kpi_1.parquet"
-OUTPUT_KPI_2 = "golden_layer/kpi_2.parquet"
-OUTPUT_KPI_3 = "golden_layer/kpi_3.parquet"
-OUTPUT_KPI_4 = "golden_layer/kpi_4.parquet"
-OUTPUT_KPI_5 = "golden_layer/kpi_5.parquet"
 OUTPUT_KPI_1 = "golden_layer/kpi_1.parquet"
 OUTPUT_KPI_2 = "golden_layer/kpi_2.parquet"
 OUTPUT_KPI_3 = "golden_layer/kpi_3.parquet"
@@ -61,25 +55,12 @@ def main():
     df_restaurant = read_parquet_from_minio(client, RESTAURANTS_PATH)
     df_searches = read_parquet_from_minio(client, SEARCHES_PATH)
     df_registrations = read_parquet_from_minio(client, REGISTRATION_PATH)
-    df_restaurant = read_parquet_from_minio(client, RESTAURANTS_PATH)
-    df_searches = read_parquet_from_minio(client, SEARCHES_PATH)
-    df_registrations = read_parquet_from_minio(client, REGISTRATION_PATH)
-    # Align schema
-    columns = ["name", "direction", "number", "email", "rating", "comments", "open_hours", "type", "key_words", "source"]
 
-
-
-    # Cuisine KPI: explode `type` column
-    df_keywords = df_restaurant.dropna(subset=["type"]).copy()
+    # --- KPI 1: Restaurant count & average rating by cuisine type ---
     df_keywords = df_restaurant.dropna(subset=["type"]).copy()
     df_keywords["type"] = df_keywords["type"].str.lower().str.split(",")
     df_keywords = df_keywords.explode("type")
     df_keywords["type"] = df_keywords["type"].str.strip()
-
-    # KPI 1
-
-    kpi_1 = (
-    # KPI 1
 
     kpi_1 = (
         df_keywords.groupby("type")
@@ -91,8 +72,7 @@ def main():
         .sort_values("restaurant_count", ascending=False)
     )
 
-    # KPI 2
-
+    # --- KPI 2: Top 5 best-rated restaurants per type ---
     kpi_2 = (
         df_keywords.sort_values(['type', 'rating'], ascending=[True, False])
         .groupby('type')
@@ -100,65 +80,35 @@ def main():
         .reset_index(drop=True)
     )
 
-    # KPI 3
-
+    # --- KPI 3: Top 10 overall best-rated restaurants ---
     kpi_3 = (
         df_keywords.sort_values(['rating'], ascending=[False])
         .head(10)
         .reset_index(drop=True)
     )
 
-    # KPI 4
+    # --- KPI 4: Number of searches per user and theme ---
+    # Rename if needed
+    if 'theme' in df_searches.columns and 'search_theme' not in df_searches.columns:
+        df_searches.rename(columns={'theme': 'search_theme'}, inplace=True)
 
     kpi_4 = (
-        df_searches.groupby(['theme', 'user_id'])
-    # KPI 2
-
-    kpi_2 = (
-        df_keywords.sort_values(['type', 'rating'], ascending=[True, False])
-        .groupby('type')
-        .head(5)
-        .reset_index(drop=True)
-    )
-
-    # KPI 3
-
-    kpi_3 = (
-        df_keywords.sort_values(['rating'], ascending=[False])
-        .head(10)
-        .reset_index(drop=True)
-    )
-
-    # KPI 4
-
-    kpi_4 = (
-        df_searches.groupby(['theme', 'user_id'])
+        df_searches.groupby(['search_theme', 'user_id'])
         .agg(
-            searches_count = ("timestamp", "count")
+            searches_count=("timestamp", "count")
         )
         .reset_index()
     )
 
-    # KPI 5
-
-    # Convert to datetime
+    # --- KPI 5: Number of user registrations by day ---
     df_registrations['register_date'] = pd.to_datetime(df_registrations['register_date'])
-
-    # Group by day (you can also use 'W' for week or 'M' for month)
-    kpi_5 = df_registrations.groupby(df_registrations['register_date'].dt.date).size().reset_index(name='user_count')
-
-    # Optional: sort by date
-    kpi_5 = kpi_5.sort_values(by='register_date')
-    # KPI 5
-
-    # Convert to datetime
-    df_registrations['register_date'] = pd.to_datetime(df_registrations['register_date'])
-
-    # Group by day (you can also use 'W' for week or 'M' for month)
-    kpi_5 = df_registrations.groupby(df_registrations['register_date'].dt.date).size().reset_index(name='user_count')
-
-    # Optional: sort by date
-    kpi_5 = kpi_5.sort_values(by='register_date')
+    kpi_5 = (
+        df_registrations
+        .groupby(df_registrations['register_date'].dt.date)
+        .size()
+        .reset_index(name='user_count')
+        .sort_values(by='register_date')
+    )
 
     # Write all outputs to MinIO
     write_parquet_to_minio(client, kpi_1, OUTPUT_KPI_1)
@@ -167,16 +117,7 @@ def main():
     write_parquet_to_minio(client, kpi_4, OUTPUT_KPI_4)
     write_parquet_to_minio(client, kpi_5, OUTPUT_KPI_5)
 
-    write_parquet_to_minio(client, kpi_1, OUTPUT_KPI_1)
-    write_parquet_to_minio(client, kpi_2, OUTPUT_KPI_2)
-    write_parquet_to_minio(client, kpi_3, OUTPUT_KPI_3)
-    write_parquet_to_minio(client, kpi_4, OUTPUT_KPI_4)
-    write_parquet_to_minio(client, kpi_5, OUTPUT_KPI_5)
-
-    
-
-    print("Golden Layer KPIs saved successfully.")
-    print("Golden Layer KPIs saved successfully.")
+    print("✅ Golden Layer KPIs saved successfully.")
 
 if __name__ == "__main__":
     main()
