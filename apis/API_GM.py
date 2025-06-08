@@ -68,7 +68,7 @@ def main():
     print("Generando reseñas simuladas de Google Maps...")
 
     # Simulated restaurant names (adjust or fetch dynamically later)
-    nombres_restaurantes = ["Can Culleretes", "Tickets Bar", "Cal Pep"]
+    nombres_restaurantes = ["Beyond Flavours", "Paradise", "Flechazo", "Shah Ghouse Hotel & Restaurant", "Over The Moon Brew Company", "eat.fit","Hyper Local","Cream Stone","Sardarji's Chaats & More","Barbeque Nation","AB's - Absolute Barbecues"]
 
     generador = ReseñasGoogleMaps()
 

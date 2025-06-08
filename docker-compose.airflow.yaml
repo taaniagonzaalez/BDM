@@ -101,23 +101,25 @@ services:
       - airflow-minio-net
 
   streamlit:
-    image: python:3.9-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
     container_name: streamlit
-    command: >
-      bash -c "
-        pip install --no-cache-dir -r /requirements.txt &&
-        streamlit run /opt/airflow/Visor/dashboard.py --server.port 8501 --server.enableCORS false
-      "
+    entrypoint: ["/app/entrypoint.sh"]
     ports:
       - "8501:8501"
     volumes:
       - ./Visor:/opt/airflow/Visor
       - ./apis:/opt/airflow/apis
       - ./requirements.txt:/requirements.txt
-    #networks:
-    #  - airflow-minio-net
-    #depends_on:
-    #  - minio
+      - ./entrypoint.sh:/app/entrypoint.sh
+    networks:
+      - airflow-minio-net
+    depends_on:
+      - minio
+
+
+
 
 volumes:
   postgres-db-volume:

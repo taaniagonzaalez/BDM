@@ -4,6 +4,7 @@ from minio import Minio
 import logging
 import io
 import uuid
+import json
 
 # ----------------------------
 # Configuration
@@ -21,6 +22,8 @@ YELP_PATH = "raw/batch/yelp/yelp_restaurants.parquet"
 BCN_PATH = "raw/batch/bcn/bcn_restaurants.parquet"
 
 SILVER_LAYER_PATH = "silver_layer/combined_restaurants.parquet"
+SILVER_LAYER_PATH1 = "silver_layer/searches.parquet"
+SILVER_LAYER_PATH2 = "silver_layer/registrations.parquet"
 
 # ----------------------------
 # Helpers
@@ -56,6 +59,35 @@ def write_parquet_to_minio(client, df, bucket_name, object_path):
     except Exception as e:
         logger.error(f"Failed to write {object_path}: {e}")
         raise
+
+def load_json_partitioned_by_date(fs):
+    """
+    Carga archivos JSON desde una estructura particionada por date=YYYY-MM-DD/
+    (solo para SEARCHES)
+    """
+    files = fs.list_objects('bdm-project-upc', prefix='raw/streaming/event_type=search/date=', recursive=True)
+
+    dfs = []
+    for file in files:
+        date_part = file.split("date=")[1].split("/")[0]
+        with fs.open(file, 'r') as f: #Add commentMore actions
+            json_objects = [json.loads(line) for line in f.readlines()]
+            df = pd.DataFrame(json_objects)
+            df["date"] = date_part
+            dfs.append(df)
+    return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+
+def load_json_flat_folder(fs):
+    """
+    Carga todos los archivos JSON directamente de una carpeta sin subcarpetas (para REGISTRATIONS)
+    """
+    files = fs.list_objects('bdm-project-upc', prefix='raw/streaming/event_type=registration', recursive=True)
+
+    data = []
+    for file in files:
+        with fs.open(file, 'r') as f:
+            data.append(json.load(f))
+    return pd.DataFrame(data) if data else pd.DataFrame()
 
 # ----------------------------
 # Main Transformation Logic
@@ -100,6 +132,32 @@ def main():
     # Save final output
     write_parquet_to_minio(client, combined_df, BUCKET_NAME, SILVER_LAYER_PATH)
 
+    #--------------------------------------------------------------------------------------
+
+    # Cargar SEARCHES desde estructura particionada por fecha
+    df_searches = load_json_partitioned_by_date(client)
+    df_searches = df_searches.rename(columns={
+        "search_date": "timestamp",
+        "theme": "search_theme"
+    })
+
+    # Cargar REGISTRATIONS desde ruta plana
+    df_registrations = load_json_flat_folder(client)
+    df_registrations = df_registrations.rename(columns={
+        "register_date": "timestamp",
+        "name": "user_name"
+    })
+
+    # Ver ejemplos
+    print("SEARCHES:")
+    print(df_searches.head())
+
+    print("\nREGISTRATIONS:")
+    print(df_registrations.head())
+
+    # Guardar como silver en Parquet
+    write_parquet_to_minio(client, df_searches, BUCKET_NAME, SILVER_LAYER_PATH1)
+    write_parquet_to_minio(client, df_registrations, BUCKET_NAME, SILVER_LAYER_PATH2)
     logger.info("Silver layer successfully updated.")
 
 if __name__ == "__main__":

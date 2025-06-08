@@ -12,12 +12,16 @@ MINIO_ACCESS_KEY = "minio"
 MINIO_SECRET_KEY = "minio123"
 BUCKET_NAME = "bdm-project-upc"
 
-YELP_PATH = "raw/batch/yelp/yelp_restaurants.parquet"
-FOURSQUARE_PATH = "raw/batch/foursquare/foursquare_restaurants.parquet"
+RESTAURANTS_PATH = "silver_layer/combined_restaurants.parquet"
+SEARCHES_PATH = "silver_layer/searches.parquet"
+REGISTRATION_PATH = "silver_layer/registrations.parquet"
 
 OUTPUT_PATH_ALL = "golden_layer/restaurants_kpi.parquet"
-OUTPUT_PATH_CUISINE = "golden_layer/kpi_cuisine.parquet"
-OUTPUT_PATH_SOURCE = "golden_layer/kpi_source_rating.parquet"
+OUTPUT_KPI_1 = "golden_layer/kpi_1.parquet"
+OUTPUT_KPI_2 = "golden_layer/kpi_2.parquet"
+OUTPUT_KPI_3 = "golden_layer/kpi_3.parquet"
+OUTPUT_KPI_4 = "golden_layer/kpi_4.parquet"
+OUTPUT_KPI_5 = "golden_layer/kpi_5.parquet"
 
 # ----------------------------
 # MinIO Client Setup
@@ -49,24 +53,22 @@ def main():
     client = get_minio_client()
 
     # Read data
-    yelp_df = read_parquet_from_minio(client, YELP_PATH)
-    fsq_df = read_parquet_from_minio(client, FOURSQUARE_PATH)
-
-    yelp_df["source"] = "Yelp"
-    fsq_df["source"] = "Foursquare"
-
+    df_restaurant = read_parquet_from_minio(client, RESTAURANTS_PATH)
+    df_searches = read_parquet_from_minio(client, SEARCHES_PATH)
+    df_registrations = read_parquet_from_minio(client, REGISTRATION_PATH)
     # Align schema
     columns = ["name", "direction", "number", "email", "rating", "comments", "open_hours", "type", "key_words", "source"]
-    df_all = pd.concat([yelp_df[columns], fsq_df[columns]], ignore_index=True)
-    df_all["number"] = df_all["number"].astype(str)
+
 
     # Cuisine KPI: explode `type` column
-    df_keywords = df_all.dropna(subset=["type"]).copy()
+    df_keywords = df_restaurant.dropna(subset=["type"]).copy()
     df_keywords["type"] = df_keywords["type"].str.lower().str.split(",")
     df_keywords = df_keywords.explode("type")
     df_keywords["type"] = df_keywords["type"].str.strip()
 
-    cuisine_kpi = (
+    # KPI 1
+
+    kpi_1 = (
         df_keywords.groupby("type")
         .agg(
             restaurant_count=("type", "count"),
@@ -76,26 +78,54 @@ def main():
         .sort_values("restaurant_count", ascending=False)
     )
 
-    # Rating KPI by source
-    rating_kpi = (
-        df_all.groupby("source")
+    # KPI 2
+
+    kpi_2 = (
+        df_keywords.sort_values(['type', 'rating'], ascending=[True, False])
+        .groupby('type')
+        .head(5)
+        .reset_index(drop=True)
+    )
+
+    # KPI 3
+
+    kpi_3 = (
+        df_keywords.sort_values(['rating'], ascending=[False])
+        .head(10)
+        .reset_index(drop=True)
+    )
+
+    # KPI 4
+
+    kpi_4 = (
+        df_searches.groupby(['theme', 'user_id'])
         .agg(
-            avg_rating=("rating", "mean"),
-            total_restaurants=("source", "count")
+            searches_count = ("timestamp", "count")
         )
         .reset_index()
     )
 
-    # Popularity score (simplified as rating for now)
-    df_all["popularity_score"] = df_all["rating"]
+    # KPI 5
+
+    # Convert to datetime
+    df_registrations['register_date'] = pd.to_datetime(df_registrations['register_date'])
+
+    # Group by day (you can also use 'W' for week or 'M' for month)
+    kpi_5 = df_registrations.groupby(df_registrations['register_date'].dt.date).size().reset_index(name='user_count')
+
+    # Optional: sort by date
+    kpi_5 = kpi_5.sort_values(by='register_date')
 
     # Write all outputs to MinIO
-    write_parquet_to_minio(client, df_all, OUTPUT_PATH_ALL)
-    write_parquet_to_minio(client, cuisine_kpi, OUTPUT_PATH_CUISINE)
-    write_parquet_to_minio(client, rating_kpi, OUTPUT_PATH_SOURCE)
+    write_parquet_to_minio(client, kpi_1, OUTPUT_KPI_1)
+    write_parquet_to_minio(client, kpi_2, OUTPUT_KPI_2)
+    write_parquet_to_minio(client, kpi_3, OUTPUT_KPI_3)
+    write_parquet_to_minio(client, kpi_4, OUTPUT_KPI_4)
+    write_parquet_to_minio(client, kpi_5, OUTPUT_KPI_5)
+
     
 
-    print("Golden Layer KPIs saved successfully (pandas version).")
+    print("Golden Layer KPIs saved successfully.")
 
 if __name__ == "__main__":
     main()
